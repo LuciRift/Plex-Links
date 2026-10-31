@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.13.3/cdn.min.js"></script>
+    <link rel="icon" href="<%= settings.favicon %>">
+    <title>Login | <%= settings.name %></title>
+    <style>
+        :root {
+            --accent-color: <%= accentColorHex %>;
+            --accent-color-rgb: <%= accentColorRgb %>;
+            --bg-primary: #0a0a0f;
+            --bg-secondary: #111118;
+            --bg-tertiary: #1c1c28;
+            --bg-card: #1f1f2e;
+            --text-primary: #ffffff;
+            --text-secondary: #e2e8f0;
+            --text-muted: #94a3b8;
+            --text-subtle: #64748b;
+            --border-color: rgba(255, 255, 255, 0.08);
+            --border-hover: rgba(255, 255, 255, 0.15);
+            --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+            --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(600px circle at 40% 40%, rgba(var(--accent-color-rgb), 0.08), transparent 40%),
+                radial-gradient(800px circle at 80% 10%, rgba(var(--accent-color-rgb), 0.05), transparent 40%),
+                radial-gradient(400px circle at 20% 80%, rgba(var(--accent-color-rgb), 0.03), transparent 40%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            z-index: 1;
+        }
+
+        .login-container {
+            max-width: 480px;
+            margin: 0 auto;
+        }
+
+        .login-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 3rem 2.5rem;
+            backdrop-filter: blur(10px);
+            box-shadow: var(--shadow-xl);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .login-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.5));
+            transform: scaleX(0);
+            transform-origin: left;
+            animation: slideIn 0.8s ease-out 0.5s forwards;
+        }
+
+        @keyframes slideIn {
+            to { transform: scaleX(1); }
+        }
+
+        .brand-section {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .logo-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 2rem;
+        }
+
+        .logo-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.8));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            box-shadow: 0 8px 25px rgba(var(--accent-color-rgb), 0.3);
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            position: relative;
+        }
+
+        .logo-icon::before {
+            content: '';
+            position: absolute;
+            inset: -2px;
+            background: linear-gradient(45deg, var(--accent-color), transparent, var(--accent-color));
+            border-radius: 18px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .logo-icon:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 12px 35px rgba(var(--accent-color-rgb), 0.4);
+        }
+
+        .logo-icon:hover::before {
+            opacity: 1;
+            animation: rotate 2s linear infinite;
+        }
+
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+
+        .logo-icon i {
+            color: white;
+            font-size: 2rem;
+            z-index: 1;
+        }
+
+        .brand-title {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent-color) 100%);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.1;
+        }
+
+        .brand-subtitle {
+            color: var(--text-muted);
+            font-size: 1rem;
+            font-weight: 400;
+            line-height: 1.5;
+        }
+
+        .auth-section {
+            margin-bottom: 2rem;
+        }
+
+        .auth-button {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background: linear-gradient(135deg, #5865f2, #4752c4);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.2s ease;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(88, 101, 242, 0.3);
+        }
+
+        .auth-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.6s;
+        }
+
+        .auth-button:hover:not(.loading) {
+            transform: translateY(-1px);
+            box-shadow: 0 6px 20px rgba(88, 101, 242, 0.4);
+            color: white;
+        }
+
+        .auth-button:hover::before {
+            left: 100%;
+        }
+
+        .auth-button:active {
+            transform: translateY(0);
+        }
+
+        .auth-button.loading {
+            pointer-events: none;
+            opacity: 0.8;
+        }
+
+        .auth-button.loading {
+            background: var(--bg-tertiary);
+        }
+
+        .discord-icon {
+            font-size: 1.125rem;
+        }
+
+        .loading-spinner {
+            width: 18px;
+            height: 18px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .features-section {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 1rem 0.5rem;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: all 0.2s ease;
+        }
+
+        .feature-item:hover {
+            background: rgba(var(--accent-color-rgb), 0.05);
+            border-color: rgba(var(--accent-color-rgb), 0.1);
+            transform: translateY(-1px);
+        }
+
+        .feature-icon {
+            font-size: 1.25rem;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+            display: block;
+        }
+
+        .feature-text {
+            font-size: 0.75rem;
+            color: var(--text-subtle);
+            font-weight: 500;
+        }
+
+        .fade-in {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out forwards;
+        }
+
+        .fade-in-delay {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 0.3s forwards;
+        }
+
+        .fade-in-delay-2 {
+            opacity: 0;
+            animation: fadeIn 0.6s ease-out 0.6s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { 
+                opacity: 0; 
+                transform: translateY(10px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        .scale-in {
+            opacity: 0;
+            transform: scale(0.95);
+            animation: scaleIn 0.5s ease-out 0.2s forwards;
+        }
+
+        @keyframes scaleIn {
+            to { 
+                opacity: 1; 
+                transform: scale(1); 
+            }
+        }
+
+        @media (max-width: 768px) {
+            .login-card {
+                padding: 2rem 1.5rem;
+                margin: 1rem;
+                border-radius: 12px;
+            }
+
+            .logo-icon {
+                width: 70px;
+                height: 70px;
+            }
+
+            .logo-icon i {
+                font-size: 1.75rem;
+            }
+
+            .brand-title {
+                font-size: 2rem;
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+                gap: 0.75rem;
+            }
+
+            .feature-item {
+                padding: 0.75rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .login-card {
+                padding: 1.5rem 1rem;
+            }
+
+            .brand-title {
+                font-size: 1.75rem;
+            }
+
+            .brand-subtitle {
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero is-fullheight">
+        <div class="hero-body">
+            <div class="container">
+                <div class="columns is-centered">
+                    <div class="column is-half-tablet is-one-third-desktop">
+                        <div class="login-container">
+                            <div class="login-card scale-in" x-data="loginHandler()" x-init="initAnimations()">
+                                
+                                <div class="brand-section fade-in">
+                                    <div class="logo-container">
+                                        <div class="logo-icon" 
+                                             @mouseenter="onLogoHover(true)" 
+                                             @mouseleave="onLogoHover(false)">
+                                            <i class="fas fa-clipboard-list" 
+                                               :class="{ 'fa-pulse': isLogoHovered }"></i>
+                                        </div>
+                                    </div>
+                                    <h1 class="brand-title"><%= settings.name %></h1>
+                                    <p class="brand-subtitle">Login to create and manage your short links</p>
+                                </div>
+
+                                <div class="auth-section fade-in-delay">
+                                    <a href="/auth" 
+                                       class="auth-button" 
+                                       :class="{ 'loading': isLoading }"
+                                       @click="handleLogin($event)"
+                                       x-show="!isLoading">
+                                        <i class="fab fa-discord discord-icon"></i>
+                                        <span>Continue with Discord</span>
+                                    </a>
+
+                                    <div class="auth-button loading" 
+                                         x-show="isLoading" 
+                                         x-transition.opacity.duration.200ms>
+                                        <div class="loading-spinner"></div>
+                                        <span>Connecting...</span>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        function loginHandler() {
+            return {
+                isLoading: false,
+                isLogoHovered: false,
+                
+                initAnimations() {
+                    
+                },
+                
+                onLogoHover(isHovered) {
+                    this.isLogoHovered = isHovered;
+                },
+                
+                handleLogin(event) {
+                    this.isLoading = true;
+                    
+                    const link = event.currentTarget;
+                    const href = link.href;
+                    
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 600);
+                    
+                    event.preventDefault();
+                }
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= settings?.name %> - Link Not Found</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+  <link rel="icon" href="<%= settings?.favicon %>">
+
+  <style>
+    :root {
+      --accent-color: <%=accentColorHex %>;
+      --accent-color-rgb: <%=accentColorRgb %>;
+      --bg-primary: #0a0a0f;
+      --bg-secondary: #111118;
+      --bg-tertiary: #1c1c28;
+      --bg-card: #1f1f2e;
+      --text-primary: #ffffff;
+      --text-secondary: #e2e8f0;
+      --text-muted: #94a3b8;
+      --text-subtle: #64748b;
+      --border-color: rgba(255, 255, 255, 0.08);
+      --border-hover: rgba(255, 255, 255, 0.15);
+      --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.2);
+      --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg-primary);
+      color: var(--text-secondary);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(600px circle at 40% 40%, rgba(var(--accent-color-rgb), 0.08), transparent 40%),
+        radial-gradient(800px circle at 80% 10%, rgba(var(--accent-color-rgb), 0.05), transparent 40%),
+        radial-gradient(400px circle at 20% 80%, rgba(var(--accent-color-rgb), 0.03), transparent 40%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .error-container {
+      text-align: center;
+      max-width: 600px;
+      padding: 2rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .error-animation {
+      position: relative;
+      margin-bottom: 3rem;
+    }
+
+    .error-404 {
+      font-size: 8rem;
+      font-weight: 900;
+      color: var(--accent-color);
+      text-shadow: 0 0 40px rgba(var(--accent-color-rgb), 0.3);
+      margin-bottom: 1rem;
+      letter-spacing: -0.05em;
+      background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.7));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: glow 2s ease-in-out infinite alternate;
+    }
+
+    @keyframes glow {
+      from {
+        filter: drop-shadow(0 0 20px rgba(var(--accent-color-rgb), 0.5));
+      }
+      to {
+        filter: drop-shadow(0 0 30px rgba(var(--accent-color-rgb), 0.8));
+      }
+    }
+
+    .floating-elements {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+    }
+
+    .floating-link {
+      position: absolute;
+      color: rgba(var(--accent-color-rgb), 0.2);
+      animation: float 6s ease-in-out infinite;
+      font-size: 1.5rem;
+    }
+
+    .floating-link:nth-child(1) {
+      top: 10%;
+      left: 20%;
+      animation-delay: 0s;
+    }
+
+    .floating-link:nth-child(2) {
+      top: 20%;
+      right: 25%;
+      animation-delay: 2s;
+    }
+
+    .floating-link:nth-child(3) {
+      bottom: 30%;
+      left: 15%;
+      animation-delay: 4s;
+    }
+
+    .floating-link:nth-child(4) {
+      bottom: 20%;
+      right: 20%;
+      animation-delay: 1s;
+    }
+
+    @keyframes float {
+      0%, 100% {
+        transform: translateY(0px) rotate(0deg);
+        opacity: 0.1;
+      }
+      50% {
+        transform: translateY(-20px) rotate(5deg);
+        opacity: 0.3;
+      }
+    }
+
+    .error-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      margin-bottom: 1rem;
+      letter-spacing: -0.02em;
+    }
+
+    .error-subtitle {
+      font-size: 1.25rem;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      line-height: 1.5;
+    }
+
+    .error-description {
+      font-size: 1rem;
+      color: var(--text-subtle);
+      margin-bottom: 3rem;
+      line-height: 1.6;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out forwards;
+    }
+
+    .fade-in-delay {
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out 0.3s forwards;
+    }
+
+    .fade-in-delay-2 {
+      opacity: 0;
+      animation: fadeIn 0.3s ease-out 0.6s forwards;
+    }
+
+    @keyframes fadeIn {
+      from { 
+        opacity: 0; 
+        transform: translateY(30px); 
+      }
+      to { 
+        opacity: 1; 
+        transform: translateY(0); 
+      }
+    }
+
+    .pulse {
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.05);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .error-container {
+        padding: 1.5rem;
+      }
+
+      .error-404 {
+        font-size: 6rem;
+      }
+
+      .error-title {
+        font-size: 2rem;
+      }
+
+      .error-subtitle {
+        font-size: 1.125rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .error-404 {
+        font-size: 4.5rem;
+      }
+
+      .error-title {
+        font-size: 1.75rem;
+      }
+
+      .error-subtitle {
+        font-size: 1rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="error-container">
+    <div class="error-animation fade-in">
+      <div class="floating-elements">
+        <i class="fas fa-link floating-link"></i>
+        <i class="fas fa-unlink floating-link"></i>
+        <i class="fas fa-external-link-alt floating-link"></i>
+        <i class="fas fa-chain-broken floating-link"></i>
+      </div>
+      
+      <div class="error-404 pulse">404</div>
+    </div>
+
+    <div class="fade-in-delay">
+      <h1 class="error-title">Link Not Found</h1>
+      <p class="error-subtitle">The link you're looking for doesn't exist or has been removed.</p>
+      <p class="error-description">
+        This could happen if the link was deleted, expired, or you may have mistyped the URL. 
+        Double-check the link and try again, or contact the person who shared it with you.
+      </p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const error404 = document.querySelector('.error-404');
+      
+      error404.addEventListener('mouseenter', function() {
+        this.style.transform = 'scale(1.1) rotate(-2deg)';
+      });
+      
+      error404.addEventListener('mouseleave', function() {
+        this.style.transform = 'scale(1) rotate(0deg)';
+      });
+
+      setTimeout(() => {
+        document.querySelectorAll('.floating-link').forEach((link, index) => {
+          link.style.animationDelay = `${index * 0.5}s`;
+        });
+      }, 1000);
+    });
+  </script>
+</body>
+</html>

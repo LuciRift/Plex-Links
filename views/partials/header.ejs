@@ -1,0 +1,331 @@
+<style>
+    :root {
+        --accent-color: <%= accentColorHex %>;
+        --accent-color-rgb: <%= accentColorRgb %>;
+        --bg-primary: #0a0a0f;
+        --bg-secondary: #111118;
+        --bg-tertiary: #1c1c28;
+        --bg-card: #1f1f2e;
+        --text-primary: #ffffff;
+        --text-secondary: #e2e8f0;
+        --text-muted: #94a3b8;
+        --text-subtle: #64748b;
+        --border-color: rgba(255, 255, 255, 0.08);
+        --border-hover: rgba(255, 255, 255, 0.15);
+    }
+
+    .banner {
+        background-color: var(--accent-color);
+        color: var(--bg-card);
+        padding: 10px;
+        text-align: center;
+        font-size: 1rem;
+        font-weight: bold;
+    }
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+
+    ::-webkit-scrollbar-thumb {
+        background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.7));
+        border-radius: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+        background-color: var(--bg-card);
+    }
+
+    .navbar.is-dark {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 1rem;
+    }
+
+    .custom-navbar {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid var(--border-color);
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+
+    .navbar-brand {
+        display: flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+    }
+
+    .brand-text {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: var(--text-primary);
+        background: linear-gradient(135deg, var(--text-primary), var(--accent-color));
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        margin-right: 1rem;
+    }
+
+    .custom-navbar .navbar-end .navbar-item {
+        background-color: transparent;
+        color: var(--text-secondary);
+        margin-right: 10px;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+    }
+
+    .custom-navbar .navbar-end .navbar-item:hover {
+        color: var(--accent-color);
+        background: rgba(var(--accent-color-rgb), 0.1);
+    }
+
+    .custom-navbar .navbar-start .navbar-item {
+        background-color: transparent;
+        color: var(--text-secondary);
+        margin-right: 10px;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+        padding: 0.75rem 1rem;
+        font-weight: 500;
+    }
+
+    .custom-navbar .navbar-start .navbar-item:hover {
+        color: var(--accent-color);
+        background: rgba(var(--accent-color-rgb), 0.1);
+        transform: translateY(-1px);
+    }
+
+    .navbar-menu {
+        background: var(--bg-card);
+        backdrop-filter: blur(20px);
+        border-top: 1px solid var(--border-color);
+    }
+
+    .navbar-menu .navbar-item {
+        color: var(--text-secondary);
+        padding: 10px 15px;
+        transition: all 0.3s ease;
+        border-radius: 8px;
+    }
+
+    .navbar-menu .navbar-item:hover {
+        color: var(--accent-color);
+        background: rgba(var(--accent-color-rgb), 0.1);
+    }
+
+    .navbar-burger {
+        color: var(--text-secondary);
+        transition: all 0.3s ease;
+    }
+
+    .navbar-burger:hover {
+        color: var(--accent-color);
+        background: rgba(var(--accent-color-rgb), 0.1);
+    }
+
+    .navbar-burger.is-active {
+        color: var(--accent-color);
+    }
+
+    .navbar-logo {
+        height: 40px;
+        width: auto;
+        margin-right: 0.75rem;
+    }
+
+    .avatar {
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        margin-right: 8px;
+        border: 2px solid rgba(var(--accent-color-rgb), 0.3);
+        transition: all 0.3s ease;
+    }
+
+    .avatar:hover {
+        border-color: var(--accent-color);
+        box-shadow: 0 0 12px rgba(var(--accent-color-rgb), 0.4);
+    }
+
+    .navbar-dropdown {
+        display: none;
+        position: absolute;
+        background-color: var(--bg-card) !important;
+        backdrop-filter: blur(20px);
+        border: 1px solid var(--border-color);
+        border-radius: 6px;
+        padding: 10px 0;
+        margin-top: 5px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        z-index: 1000;
+    }
+
+    .navbar-item.has-dropdown:hover .navbar-dropdown {
+        display: block;
+    }
+
+    .navbar-dropdown .navbar-item,
+    .navbar-dropdown .navbar-item:hover,
+    .navbar-dropdown .navbar-item:focus,
+    .navbar-dropdown .navbar-item:active {
+        background-color: transparent !important;
+        color: var(--text-secondary) !important;
+        transition: all 0.3s ease;
+    }
+
+    .navbar-dropdown .navbar-item:hover {
+        background-color: rgba(var(--accent-color-rgb), 0.1) !important;
+        color: var(--accent-color) !important;
+    }
+
+    .navbar-link, 
+    .navbar-link:hover,
+    .navbar-item.has-dropdown .navbar-link:hover {
+        background-color: transparent !important;
+        color: var(--text-secondary) !important;
+    }
+
+    .navbar-dropdown .navbar-item:focus {
+        outline: none;
+    }
+
+    .navbar-dropdown .navbar-item .icon {
+        margin-right: 8px;
+    }
+
+    .navbar-item.has-dropdown {
+        position: relative;
+    }
+
+    .navbar-end {
+        position: relative;
+    }
+
+    .navbar-menu .navbar-dropdown {
+        background-color: var(--bg-card);
+        border-radius: 6px;
+        padding: 10px 0;
+        margin-top: -2px;
+    }
+
+    .navbar-item .icon {
+        margin-right: 0.2rem !important;
+        display: inline-flex;
+        align-items: center;
+        color: inherit;
+    }
+
+    .navbar-item.current-page {
+        color: var(--accent-color);
+        background: rgba(var(--accent-color-rgb), 0.15);
+        position: relative;
+    }
+
+    .navbar-item.current-page::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 3px;
+        height: 20px;
+        background: linear-gradient(135deg, var(--accent-color), rgba(var(--accent-color-rgb), 0.7));
+        border-radius: 2px;
+    }
+
+.navbar-link::after {
+    border-color: var(--accent-color) !important;
+}
+
+</style>
+
+<nav class="navbar custom-navbar">
+    <div class="navbar-brand">
+        <span class="brand-text"><%= settings.name %></span>
+        
+        <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMenu">
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+            <span aria-hidden="true"></span>
+        </a>
+    </div>
+
+    <div id="navbarMenu" class="navbar-menu">
+        <div class="navbar-end">
+            <a class="navbar-item" href="/home">
+                <span class="icon">
+                    <i class="fas fa-home"></i>
+                </span>
+                Dashboard
+            </a>
+            <% if (isStaff) { %>
+                <a class="navbar-item" href="/analytics">
+                    <span class="icon">
+                        <i class="fas fa-chart-bar"></i>
+                    </span>
+                    Analytics
+                </a>
+            <% } %>
+            <div class="navbar-item has-dropdown is-hoverable">
+                <a class="navbar-link" style="color: var(--text-secondary);">
+                    <% if (user.avatar) { %>
+                        <img src="https://cdn.discordapp.com/avatars/<%= user.id %>/<%= user.avatar %>.webp?size=240" alt="Avatar" class="avatar">
+                    <% } else { %>
+                        <span class="icon">
+                            <i class="fas fa-user-circle"></i>
+                        </span>
+                    <% } %>
+                    <span>Logged in as <%= user.username %></span>
+                </a>
+
+                <div class="navbar-dropdown">
+                    <% if (isStaff) { %>
+                        <a class="navbar-item" href="/staff">
+                            <span class="icon">
+                                <i class="fas fa-cogs"></i>
+                            </span>
+                            Staff Panel
+                        </a>
+                    <% } %>
+                    <a class="navbar-item" href="/logout">
+                        <span class="icon">
+                            <i class="fas fa-sign-out-alt"></i>
+                        </span>
+                        Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+    
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const navbarBurgers = Array.prototype.slice.call(document.querySelectorAll('.navbar-burger'), 0);
+        if (navbarBurgers.length > 0) {
+            navbarBurgers.forEach(el => {
+                el.addEventListener('click', () => {
+                    const target = el.dataset.target;
+                    const $target = document.getElementById(target);
+                    el.classList.toggle('is-active');
+                    $target.classList.toggle('is-active');
+                });
+            });
+        }
+
+        const currentPath = window.location.pathname;
+        const navItems = document.querySelectorAll('.navbar-item');
+        
+        navItems.forEach(item => {
+            const href = item.getAttribute('href');
+            if (href === currentPath || (currentPath === '/' && href === '/home')) {
+                item.classList.add('current-page');
+            }
+        });
+    });
+</script>

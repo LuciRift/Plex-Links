@@ -1,0 +1,41 @@
+# ===========================================================================
+# Plex Links Configuration
+# If you find any issues, need support, or have a suggestion for the product, let us know in our Discord server.
+# Discord: https://discord.gg/plexdev
+# Documentation: https://docs.plexdevelopment.net/
+# ===========================================================================
+MongoURI: "CONNECTION_URL"
+DebugMode: true
+
+OwnerID: ["DISCORD_USER_ID", "DISCORD_USER_ID"] # The Discord User ID's that will have full access, you can add multiple
+# ===========================================================================
+# DISCORD OAUTH2
+# You must not leave them as blank!
+# ===========================================================================
+# Discord OAuth2 credentials, get these from the Discord Developer Portal: https://discord.com/developers/applications
+# Note: MAKE SURE TO REPLACE LOCALHOST:3000 WITH THE DOMAIN OR IP YOU ACCESS THE WEBSITE WITH!
+clientID: "CLIENT_ID"
+clientSecret: "CLIENT_SECRET"
+callbackURL: "http://localhost:3000/auth/discord/callback" # Create a Redirect URL in the Developer Portal and set it to this callback URL
+
+secretKey: "uNLmkcssGY31k128s0mj" # This can be anything, We recommend using this https://www.dashlane.com/features/password-generator with at least 20 characters, (9274)
+
+Secure: false # Enable if you are using HTTPS
+trustProxy: false # Enable If your application is behind a reverse proxy (like Cloudflare, Nginx, etc.)
+SessionExpires: "7d" # How long should a session be valid
+
+# ===========================================================================
+# WEBSERVER
+# You must not leave them as blank!
+# ===========================================================================
+baseURL: "http://localhost:3000" # The exact URL you use to access the website, No trailing slashes
+Port: 3000 # The port you want the webserver to be ran on
+
+# ===========================================================================
+# RATELIMIT
+# ===========================================================================
+RateLimit:
+  enabled: true
+  windowMs: "1m"
+  max: 60 # limit each IP to 60 slug requests per minute
+  message: "Too many link requests from this IP, please try again later."
